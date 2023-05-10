@@ -50,7 +50,13 @@ namespace FullStack.API.Controllers
             }
             return BadRequest();
         }
-
+        
+        /// <summary>
+        /// for updating , we can handle with Employee id as Route parameter
+        /// using [FromRoute] or by handling [FromQuery] and the other parameter employee
+        /// </summary>
+        /// <param name="employee"></param>
+        /// <returns></returns>
         [HttpPut]
         public async Task<IActionResult> UpdateEmployee([FromBody] Employee employee)
         {
@@ -78,6 +84,15 @@ namespace FullStack.API.Controllers
             await this.fullStackDbContext.SaveChangesAsync();
             return Ok(employeeRequest);
 
+        }
+
+        [HttpGet]
+        [Route("Search/{name}")]
+
+        public IEnumerable<Employee> Search(string name)
+        {
+            var result = this.fullStackDbContext.Employees.Where(e=>e.Name == name);
+            return result;
         }
     }
 }
